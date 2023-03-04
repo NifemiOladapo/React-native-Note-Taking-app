@@ -8,12 +8,21 @@ import {
   TextInput,
   Alert,
   ScrollView,
+  FlatList,
 } from "react-native";
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
 
-const Home = ({ navigation, allNotes, setAllNotes, note, setNote }) => {
+const Home = ({
+  navigation,
+  allNotes,
+  setAllNotes,
+  note,
+  setNote,
+  activeScreen,
+  setActiveScreen,
+}) => {
   useEffect(() => {
     const getStorageData = async () => {
       const items = await AsyncStorage.getItem("@allnotes");
@@ -36,21 +45,25 @@ const Home = ({ navigation, allNotes, setAllNotes, note, setNote }) => {
     <View style={styles.screen}>
       <Header />
       <View style={styles.notesWrapper}>
-        <ScrollView>
-          {allNotes.map((e) => {
+        <FlatList
+          keyExtractor={(item) => item.noteId}
+          data={allNotes}
+          renderItem={(data) => {
             return (
               <Pressable
                 onPress={() => {
-                  setNote(e);
+                  setNote(data.item);
                   navigation.navigate("Note");
+                  setActiveScreen("edit");
                 }}
                 style={styles.singleNote}
-                key={e.noteId}
               >
                 <Pressable
                   onPress={() => {
                     setAllNotes(
-                      allNotes.filter((note) => note.noteId !== e.noteId)
+                      allNotes.filter(
+                        (note) => note.noteId !== data.item.noteId
+                      )
                     );
                   }}
                 >
@@ -74,17 +87,21 @@ const Home = ({ navigation, allNotes, setAllNotes, note, setNote }) => {
                   numberOfLines={1}
                   style={{ fontSize: 17, textTransform: "capitalize" }}
                 >
-                  {e.noteTitle}
+                  {data.item.noteTitle}
                 </Text>
                 <Text numberOfLines={1} style={{ opacity: 0.6 }}>
-                  {e.noteText}
+                  {data.item.noteText}
                 </Text>
               </Pressable>
             );
-          })}
-        </ScrollView>
+          }}
+        ></FlatList>
       </View>
-      <Footer navigation={navigation} />
+      <Footer
+        navigation={navigation}
+        activeScreen={activeScreen}
+        setActiveScreen={setActiveScreen}
+      />
     </View>
   );
 };

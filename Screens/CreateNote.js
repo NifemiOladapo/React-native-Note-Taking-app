@@ -6,18 +6,36 @@ import {
   TextInput,
   Button,
   Pressable,
+  Keyboard,
 } from "react-native";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const CreateNote = ({ navigation, allNotes, setAllNotes }) => {
+const CreateNote = ({
+  navigation,
+  allNotes,
+  setAllNotes,
+  activeScreen,
+  setActiveScreen,
+}) => {
   const [noteTitle, setNoteTitle] = useState("");
   const [noteText, setNoteText] = useState("");
 
+  const [showFooter, setShowFooter] = useState(true);
+
+  useEffect(() => {
+    Keyboard.addListener("keyboardDidShow", () => {
+      setShowFooter(false);
+    });
+    Keyboard.addListener("keyboardDidHide", () => {
+      setShowFooter(true);
+    });
+  });
+
   return (
     <View style={styles.screen}>
-      <Header />
+      {/* <Header /> */}
       <View style={styles.body}>
         <ScrollView>
           <TextInput
@@ -47,12 +65,13 @@ const CreateNote = ({ navigation, allNotes, setAllNotes }) => {
       </View>
       <Pressable
         onPress={() => {
-          allNotes.push({
+          allNotes.unshift({
             noteId: Math.random(),
             noteText: noteText,
             noteTitle: noteTitle,
           });
           setAllNotes([...allNotes]);
+          setActiveScreen("home");
           navigation.navigate("AllNotes");
         }}
         style={{
@@ -65,7 +84,13 @@ const CreateNote = ({ navigation, allNotes, setAllNotes }) => {
       >
         <Text style={{ fontSize: 15 }}>SAVE</Text>
       </Pressable>
-      <Footer navigation={navigation} />
+      {showFooter ? (
+        <Footer
+          navigation={navigation}
+          activeScreen={activeScreen}
+          setActiveScreen={setActiveScreen}
+        />
+      ) : null}
     </View>
   );
 };
@@ -75,9 +100,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   body: {
-    flex: 7,
+    flex: 8,
     width: "100%",
-    paddingTop: 25,
+    paddingTop: 30,
     paddingHorizontal: "6%",
   },
 });

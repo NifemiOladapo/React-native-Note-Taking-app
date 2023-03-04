@@ -5,18 +5,35 @@ import {
   ScrollView,
   TextInput,
   Pressable,
+  Keyboard,
 } from "react-native";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-const Note = ({ navigation, note, setNote, allNotes, setAllNotes }) => {
-  const [title, setTitle] = useState("");
-  const [text, setText] = useState("");
+const Note = ({
+  navigation,
+  note,
+  setNote,
+  allNotes,
+  setAllNotes,
+  activeScreen,
+  setActiveScreen,
+}) => {
+  const [showFooter, setShowFooter] = useState(true);
+
+  useEffect(() => {
+    Keyboard.addListener("keyboardDidShow", () => {
+      setShowFooter(false);
+    });
+    Keyboard.addListener("keyboardDidHide", () => {
+      setShowFooter(true);
+    });
+  });
 
   return (
     <View style={styles.screen}>
-      <Header />
+      {/* <Header /> */}
       <View style={styles.body}>
         <ScrollView>
           <TextInput
@@ -46,6 +63,7 @@ const Note = ({ navigation, note, setNote, allNotes, setAllNotes }) => {
           foundNote.noteTitle = note.noteTitle;
           setAllNotes([...allNotes]);
           console.log(foundNote);
+          setActiveScreen("home");
           navigation.navigate("AllNotes");
         }}
         style={{
@@ -58,7 +76,13 @@ const Note = ({ navigation, note, setNote, allNotes, setAllNotes }) => {
       >
         <Text style={{ fontSize: 15 }}>SAVE</Text>
       </Pressable>
-      <Footer navigation={navigation} />
+      {showFooter ? (
+        <Footer
+          navigation={navigation}
+          activeScreen={activeScreen}
+          setActiveScreen={setActiveScreen}
+        />
+      ) : null}
     </View>
   );
 };
@@ -69,9 +93,9 @@ const styles = StyleSheet.create({
     // padding: 15,
   },
   body: {
-    flex: 7,
+    flex: 8,
     width: "100%",
-    paddingTop: 25,
+    paddingTop: 30,
     paddingHorizontal: "6%",
   },
 });

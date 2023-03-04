@@ -5,7 +5,7 @@ const Header = () => {
     <View style={styles.header}>
       <Text style={{ fontSize: 21 }}>StartUp Notes</Text>
       <Pressable>
-        <Icon name="user" size={40} color="#141414" />
+        <Icon name="user" size={50} color="#141414" />
       </Pressable>
     </View>
   );
@@ -13,13 +13,15 @@ const Header = () => {
 
 const styles = StyleSheet.create({
   header: {
-    flex: 1,
+    // flex: 1,
     width: "100%",
     elevation: 6,
     alignItems: "center",
     flexDirection: "row",
     backgroundColor: "#fff",
-    paddingTop: 35,
+    paddingTop: 25,
+    // paddingBottom: 30,
+    height: 75,
     justifyContent: "space-around",
   },
 });

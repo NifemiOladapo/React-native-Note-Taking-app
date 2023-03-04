@@ -20,24 +20,7 @@ const AppState = () => {
 
   const [note, setNote] = useState({});
 
-  // useEffect(async () => {
-  //   try {
-  //     await AsyncStorage.setItem("@notes", JSON.stringify(allNotes));
-  //   } catch (e) {
-  //     console.log(e.message);
-  //   }
-  // }, []);
-
-  // useEffect(async () => {
-  //   try {
-  //     const value = await AsyncStorage.getItem("@notes");
-  //     if (value !== null) {
-  //       setAllNotes(value);
-  //     }
-  //   } catch (e) {
-  //     console.log(e.message);
-  //   }
-  // }, []);
+  const [activeScreen, setActiveScreen] = useState("home");
 
   return (
     <Navigation
@@ -45,6 +28,8 @@ const AppState = () => {
       setAllNotes={setAllNotes}
       note={note}
       setNote={setNote}
+      activeScreen={activeScreen}
+      setActiveScreen={setActiveScreen}
     />
   );
 };

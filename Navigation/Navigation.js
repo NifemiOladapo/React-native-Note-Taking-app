@@ -7,7 +7,14 @@ import CreateNote from "../Screens/CreateNote";
 import Home from "../Screens/Home";
 import Note from "../Screens/Note";
 
-const Navigation = ({ allNotes, setAllNotes, note, setNote }) => {
+const Navigation = ({
+  allNotes,
+  setAllNotes,
+  note,
+  setNote,
+  activeScreen,
+  setActiveScreen,
+}) => {
   const Stack = createNativeStackNavigator();
   return (
     <NavigationContainer>
@@ -20,6 +27,8 @@ const Navigation = ({ allNotes, setAllNotes, note, setNote }) => {
               setAllNotes={setAllNotes}
               note={note}
               setNote={setNote}
+              activeScreen={activeScreen}
+              setActiveScreen={setActiveScreen}
             />
           )}
         </Stack.Screen>
@@ -31,6 +40,8 @@ const Navigation = ({ allNotes, setAllNotes, note, setNote }) => {
               setAllNotes={setAllNotes}
               note={note}
               setNote={setNote}
+              activeScreen={activeScreen}
+              setActiveScreen={setActiveScreen}
             />
           )}
         </Stack.Screen>
@@ -42,6 +53,18 @@ const Navigation = ({ allNotes, setAllNotes, note, setNote }) => {
               setAllNotes={setAllNotes}
               note={note}
               setNote={setNote}
+              activeScreen={activeScreen}
+              setActiveScreen={setActiveScreen}
+            />
+          )}
+        </Stack.Screen>
+        {/* needed to create this screen, not that i am ever navigating to it but because i want to be able to pass the activeScreen and setActive prop to it */}
+        <Stack.Screen options={{ headerShown: false }} name="footer">
+          {(props) => (
+            <Footer
+              {...props}
+              activeScreen={activeScreen}
+              setActiveScreen={setActiveScreen}
             />
           )}
         </Stack.Screen>

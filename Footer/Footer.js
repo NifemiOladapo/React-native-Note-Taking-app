@@ -1,18 +1,39 @@
 import { StyleSheet, View, Text, Pressable } from "react-native";
 import Icon from "react-native-vector-icons/SimpleLineIcons";
 import Icon2 from "react-native-vector-icons/Ionicons";
+import { useEffect } from "react";
 
-const Footer = ({ navigation }) => {
+const Footer = ({ navigation, activeScreen, setActiveScreen }) => {
+  useEffect(() => {
+    console.log(activeScreen);
+  }, [activeScreen]);
+
   return (
     <View style={styles.footer}>
       <Pressable
-        onPress={() => navigation.navigate("AllNotes")}
+        onPress={() => {
+          setActiveScreen("home");
+          navigation.navigate("AllNotes");
+        }}
         style={{ paddingRight: 130 }}
       >
-        <Icon name="notebook" size={30} color="#141414" />
+        <Icon
+          name="notebook"
+          size={30}
+          color={activeScreen === "home" ? "blue" : "#141414"}
+        />
       </Pressable>
-      <Pressable onPress={() => navigation.navigate("CreateNote")}>
-        <Icon2 name="md-create-outline" size={35} color="#141414" />
+      <Pressable
+        onPress={() => {
+          setActiveScreen("create");
+          navigation.navigate("CreateNote");
+        }}
+      >
+        <Icon2
+          name="md-create-outline"
+          size={35}
+          color={activeScreen === "create" ? "blue" : "#141414"}
+        />
       </Pressable>
     </View>
   );
@@ -20,7 +41,8 @@ const Footer = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   footer: {
-    flex: 1,
+    // flex: 1,
+    height: 50,
     justifyContent: "space-around",
     alignItems: "center",
     flexDirection: "row",
